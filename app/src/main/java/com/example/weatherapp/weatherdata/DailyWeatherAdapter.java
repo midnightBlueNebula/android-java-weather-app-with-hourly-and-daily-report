@@ -1,2 +1,4 @@
-package com.example.weatherapp.weatherdata;public class DailyWeatherAdapter {
+package com.example.weatherapp.weatherdata;
+
+public class DailyWeatherAdapter {
 }

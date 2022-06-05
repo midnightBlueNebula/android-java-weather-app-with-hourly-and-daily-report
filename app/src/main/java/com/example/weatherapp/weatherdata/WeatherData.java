@@ -1,13 +1,18 @@
 package com.example.weatherapp.weatherdata;
 
 import android.app.ProgressDialog;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
+import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
 
 import com.example.weatherapp.BuildConfig;
+import com.example.weatherapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,38 +37,54 @@ public class WeatherData {
 
     private String weather;
     private String degree;
-    private final String apiKey = "";
-    private String requestStr = "https://api.openweathermap.org/data/2.5/weather";
-    private String options;
+    private String weatherDescription;
+    private String cityName;
+    private double geoCoords[] = new double[2];
 
-    private ProgressDialog pd;
+    private HourlyWeatherAdapter hourlyWeatherAdapteradapter;
+
+    private final String apiKey = "enter api key here";
+    private String geoReq = "https://api.openweathermap.org/geo/1.0/direct?q=";
+    private String weatherReq = "https://api.openweathermap.org/data/2.5/onecall?lat=";
+
 
     public WeatherData(String city) {
         StrictMode.setThreadPolicy(policy);
 
-        options = "?q=" + city + "&apikey=" + apiKey;
-        requestStr += options;
+        geoReq += (city)+"&limit=1&appid=" + apiKey;
 
-        try {
-            JSONObject json = readJsonFromUrl(requestStr);
-            JSONObject main = (JSONObject) json.get("main");
-            degree = "" + (int) Math.round(main.getDouble("temp") - 273.15) + "°C";
+        try{
+            JSONObject jsonGeo = readJsonFromUrl(geoReq, true);
 
-            JSONObject weatherJson = (JSONObject) json.getJSONArray("weather").get(0);
-            weather = weatherJson.getString("main");
+            cityName = jsonGeo.getString("name");
+            geoCoords[0] = jsonGeo.getDouble("lat");
+            geoCoords[1] = jsonGeo.getDouble("lon");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
 
-    public String getWeather() {
-        return weather;
-    }
+        weatherReq += (geoCoords[0])+"&lon="+(geoCoords[1])+"&exclude=minutely,current&appid=" + apiKey;
 
-    public String getDegree() {
-        return degree;
+        try {
+            JSONObject jsonWeather = readJsonFromUrl(weatherReq, false);
+            JSONArray hourly = jsonWeather.getJSONArray("hourly");
+            JSONObject currentWeather = (JSONObject) hourly.get(0);
+
+            hourlyWeatherAdapteradapter = new HourlyWeatherAdapter(hourly);
+            degree = Math.round(currentWeather.getDouble("temp") - 273.15) + "°C";
+
+            JSONArray weatherArr = currentWeather.getJSONArray("weather");
+            JSONObject weatherObj = (JSONObject) weatherArr.get(0);
+
+            weather = weatherObj.getString("main");
+            weatherDescription = weatherObj.getString("description");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private static String readAll(Reader rd) throws IOException {
@@ -75,15 +96,53 @@ public class WeatherData {
         return sb.toString();
     }
 
-    private static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+    private static JSONObject readJsonFromUrl(String url, boolean enclosedWithBrackets) throws IOException, JSONException {
         InputStream is = new URL(url).openStream();
         try {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             String jsonText = readAll(rd);
+
+            if (enclosedWithBrackets){
+                jsonText = jsonText.replace("[", "").replace("]", "");
+            }
+
             JSONObject json = new JSONObject(jsonText);
             return json;
         } finally {
             is.close();
         }
+    }
+
+    /*@BindingAdapter("app:srcCompat")
+    public static void setImageDrawable(ImageView view, Drawable drawable) {
+        view.setImageDrawable(drawable);
+    }
+
+    public int getIcon(){
+        switch (getWeather()){
+            case "Clouds": return R.drawable.ic_cloudy;
+            case "Clear" : return R.drawable.ic_sunny;
+            default: return R.drawable.ic_launcher_foreground;
+        }
+    }*/
+
+    public String getWeather() {
+        return weather;
+    }
+
+    public String getDegree() {
+        return degree;
+    }
+
+    public String getWeatherDescription() {
+        return weatherDescription;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public HourlyWeatherAdapter getHourlyWeatherAdapter() {
+        return hourlyWeatherAdapteradapter;
     }
 }
