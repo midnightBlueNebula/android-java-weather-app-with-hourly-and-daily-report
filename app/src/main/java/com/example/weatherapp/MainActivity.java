@@ -23,25 +23,45 @@ public class MainActivity extends AppCompatActivity {
 
         SearchView search = findViewById(R.id.searchCity);
         androidx.recyclerview.widget.RecyclerView hourlyList = findViewById(R.id.hourlyList);
+        androidx.recyclerview.widget.RecyclerView dailyList = findViewById(R.id.dailyList);
 
-        RecyclerView.LayoutManager RecyclerViewLayoutManager
+
+        RecyclerView.LayoutManager RecyclerViewLayoutManagerForHourlyList
+                = new LinearLayoutManager(
+                getApplicationContext());
+
+        RecyclerView.LayoutManager RecyclerViewLayoutManagerForDailyList
                 = new LinearLayoutManager(
                 getApplicationContext());
 
         hourlyList.setLayoutManager(
-                RecyclerViewLayoutManager);
+                RecyclerViewLayoutManagerForHourlyList);
 
-        LinearLayoutManager HorizontalLayout
+        dailyList.setLayoutManager(
+                RecyclerViewLayoutManagerForDailyList);
+
+        LinearLayoutManager HorizontalLayoutForHourlyList
                 = new LinearLayoutManager(
                 MainActivity.this,
                 LinearLayoutManager.HORIZONTAL,
                 false);
-        hourlyList.setLayoutManager(HorizontalLayout);
+
+        LinearLayoutManager HorizontalLayoutForDailyList
+                = new LinearLayoutManager(
+                MainActivity.this,
+                LinearLayoutManager.HORIZONTAL,
+                false);
+
+
+        hourlyList.setLayoutManager(HorizontalLayoutForHourlyList);
+
+        dailyList.setLayoutManager(HorizontalLayoutForDailyList);
 
         WeatherData data = new WeatherData("Ankara");
 
         binding.setData(data);
         hourlyList.setAdapter(data.getHourlyWeatherAdapter());
+        dailyList.setAdapter(data.getDailyWeatherAdapter());
 
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -51,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
                 binding.setData(data);
                 hourlyList.setAdapter(data.getHourlyWeatherAdapter());
+                dailyList.setAdapter(data.getDailyWeatherAdapter());
 
                 return false;
             }

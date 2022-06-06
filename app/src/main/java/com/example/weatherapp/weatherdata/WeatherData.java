@@ -42,8 +42,9 @@ public class WeatherData {
     private double geoCoords[] = new double[2];
 
     private HourlyWeatherAdapter hourlyWeatherAdapteradapter;
+    private DailyWeatherAdapter dailyWeatherAdapter;
 
-    private final String apiKey = "enter api key here";
+    private final String apiKey = "fc647896956b4a54bba7e7a99655b4f6";
     private String geoReq = "https://api.openweathermap.org/geo/1.0/direct?q=";
     private String weatherReq = "https://api.openweathermap.org/data/2.5/onecall?lat=";
 
@@ -69,10 +70,15 @@ public class WeatherData {
 
         try {
             JSONObject jsonWeather = readJsonFromUrl(weatherReq, false);
+
             JSONArray hourly = jsonWeather.getJSONArray("hourly");
+            JSONArray daily = jsonWeather.getJSONArray("daily");
+
             JSONObject currentWeather = (JSONObject) hourly.get(0);
 
             hourlyWeatherAdapteradapter = new HourlyWeatherAdapter(hourly);
+            dailyWeatherAdapter = new DailyWeatherAdapter(daily);
+
             degree = Math.round(currentWeather.getDouble("temp") - 273.15) + "°C";
 
             JSONArray weatherArr = currentWeather.getJSONArray("weather");
@@ -145,4 +151,6 @@ public class WeatherData {
     public HourlyWeatherAdapter getHourlyWeatherAdapter() {
         return hourlyWeatherAdapteradapter;
     }
+
+    public DailyWeatherAdapter getDailyWeatherAdapter() { return dailyWeatherAdapter; }
 }

@@ -68,7 +68,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/hourlyList"
-            android:layout_width="408dp"
+            android:layout_width="match_parent"
             android:layout_height="99dp"
             android:layoutDirection="ltr"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -77,6 +77,15 @@
             app:layout_constraintTop_toBottomOf="@+id/degree"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dailyList"
+            android:layout_width="match_parent"
+            android:layout_height="99dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hourlyList" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
