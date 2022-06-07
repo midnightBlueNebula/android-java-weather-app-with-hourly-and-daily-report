@@ -44,7 +44,7 @@ public class WeatherData {
     private HourlyWeatherAdapter hourlyWeatherAdapteradapter;
     private DailyWeatherAdapter dailyWeatherAdapter;
 
-    private final String apiKey = "fc647896956b4a54bba7e7a99655b4f6";
+    private final String apiKey = APIKEY.getKey();
     private String geoReq = "https://api.openweathermap.org/geo/1.0/direct?q=";
     private String weatherReq = "https://api.openweathermap.org/data/2.5/onecall?lat=";
 
