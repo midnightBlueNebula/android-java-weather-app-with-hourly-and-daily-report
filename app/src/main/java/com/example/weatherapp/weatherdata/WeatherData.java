@@ -36,7 +36,7 @@ public class WeatherData {
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
     private String weather;
-    private String degree;
+    private String temperature;
     private String weatherDescription;
     private String cityName;
     private double geoCoords[] = new double[2];
@@ -79,7 +79,7 @@ public class WeatherData {
             hourlyWeatherAdapteradapter = new HourlyWeatherAdapter(hourly);
             dailyWeatherAdapter = new DailyWeatherAdapter(daily);
 
-            degree = Math.round(currentWeather.getDouble("temp") - 273.15) + "°C";
+            temperature = Math.round(currentWeather.getDouble("temp") - 273.15) + "°C";
 
             JSONArray weatherArr = currentWeather.getJSONArray("weather");
             JSONObject weatherObj = (JSONObject) weatherArr.get(0);
@@ -119,25 +119,13 @@ public class WeatherData {
         }
     }
 
-    /*@BindingAdapter("app:srcCompat")
-    public static void setImageDrawable(ImageView view, Drawable drawable) {
-        view.setImageDrawable(drawable);
-    }
-
-    public int getIcon(){
-        switch (getWeather()){
-            case "Clouds": return R.drawable.ic_cloudy;
-            case "Clear" : return R.drawable.ic_sunny;
-            default: return R.drawable.ic_launcher_foreground;
-        }
-    }*/
 
     public String getWeather() {
         return weather;
     }
 
-    public String getDegree() {
-        return degree;
+    public String getTemperature() {
+        return temperature;
     }
 
     public String getWeatherDescription() {
