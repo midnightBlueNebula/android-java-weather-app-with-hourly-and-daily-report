@@ -1,6 +1,7 @@
 package com.example.weatherapp;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -19,7 +20,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        ActivityMainBinding
+                binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        androidx.constraintlayout.widget.ConstraintLayout
+                constraintLayout = findViewById(R.id.constraintLayout);
 
         SearchView search = findViewById(R.id.searchCity);
         androidx.recyclerview.widget.RecyclerView hourlyList = findViewById(R.id.hourlyList);
@@ -62,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         binding.setData(data);
         hourlyList.setAdapter(data.getHourlyWeatherAdapter());
         dailyList.setAdapter(data.getDailyWeatherAdapter());
+        WeatherData.setBackgroundImage(constraintLayout, data.getWeather());
 
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -72,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 binding.setData(data);
                 hourlyList.setAdapter(data.getHourlyWeatherAdapter());
                 dailyList.setAdapter(data.getDailyWeatherAdapter());
+                WeatherData.setBackgroundImage(constraintLayout, data.getWeather());
 
                 return false;
             }
@@ -82,4 +89,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

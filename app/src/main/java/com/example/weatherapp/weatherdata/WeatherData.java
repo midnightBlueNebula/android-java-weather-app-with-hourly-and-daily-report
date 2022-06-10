@@ -66,7 +66,7 @@ public class WeatherData {
             e.printStackTrace();
         }
 
-        weatherReq += (geoCoords[0])+"&lon="+(geoCoords[1])+"&exclude=minutely,current&appid=" + apiKey;
+        weatherReq += (geoCoords[0])+"&lon="+(geoCoords[1])+"&units=metric&exclude=minutely,current&appid=" + apiKey;
 
         try {
             JSONObject jsonWeather = readJsonFromUrl(weatherReq, false);
@@ -79,7 +79,7 @@ public class WeatherData {
             hourlyWeatherAdapteradapter = new HourlyWeatherAdapter(hourly);
             dailyWeatherAdapter = new DailyWeatherAdapter(daily);
 
-            temperature = Math.round(currentWeather.getDouble("temp") - 273.15) + "°C";
+            temperature = Math.round(currentWeather.getDouble("temp")) + "°C";
 
             JSONArray weatherArr = currentWeather.getJSONArray("weather");
             JSONObject weatherObj = (JSONObject) weatherArr.get(0);
@@ -116,6 +116,29 @@ public class WeatherData {
             return json;
         } finally {
             is.close();
+        }
+    }
+
+
+    public static void setBackgroundImage(View layout, String weather){
+        switch (weather){
+            case "Clear" : layout.setBackgroundResource(R.drawable.sunny); break;
+            case "Rain" : layout.setBackgroundResource(R.drawable.rain); break;
+            case "Clouds" : layout.setBackgroundResource(R.drawable.clouds); break;
+            case "Snow" : layout.setBackgroundResource(R.drawable.snow); break;
+            case "Extreme" : layout.setBackgroundResource(R.drawable.extreme_weather); break;
+            case "Thunderstorm" : layout.setBackgroundResource(R.drawable.thunderstorm); break;
+            case "Drizzle" : layout.setBackgroundResource(R.drawable.drizzle); break;
+            case "Mist" : layout.setBackgroundResource(R.drawable.mist); break;
+            case "Smoke" : layout.setBackgroundResource(R.drawable.smoke); break;
+            case "Haze" : layout.setBackgroundResource(R.drawable.haze); break;
+            case "Dust" : layout.setBackgroundResource(R.drawable.dust); break;
+            case "Fog" : layout.setBackgroundResource(R.drawable.fog); break;
+            case "Sand" : layout.setBackgroundResource(R.drawable.sand); break;
+            case "Tornado" : layout.setBackgroundResource(R.drawable.tornado); break;
+            case "Squall" : layout.setBackgroundResource(R.drawable.squall); break;
+            case "Ash" : layout.setBackgroundResource(R.drawable.ash); break;
+            default: layout.setBackgroundResource(R.drawable.clouds); break;
         }
     }
 

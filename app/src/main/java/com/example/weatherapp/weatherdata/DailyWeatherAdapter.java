@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 
 public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapter.ViewHolder> {
     private JSONArray localDataSet;
+    private String weather;
     private String weatherDescription;
     private String maxTemperature;
     private String minTemperature;
@@ -30,6 +31,7 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
         private final TextView weatherDescriptionView;
         private final TextView maxTemperatureView;
         private final TextView minTemperatureView;
+        private final androidx.constraintlayout.widget.ConstraintLayout dailyLayoutView;
 
         public ViewHolder(View view) {
             super(view);
@@ -38,14 +40,21 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
             weatherDescriptionView = view.findViewById(R.id.dailyWeatherDescriptionView);
             maxTemperatureView = view.findViewById(R.id.dailyMaxTemperatureView);
             minTemperatureView = view.findViewById(R.id.dailyMinTemperatureView);
+            dailyLayoutView = view.findViewById(R.id.dailyLayout);
         }
 
         public TextView getWeatherDescriptionViewView() {
             return weatherDescriptionView;
         }
+
         public TextView getMaxTemperatureView() { return maxTemperatureView; }
+
         public TextView getMinTemperatureView() { return minTemperatureView; }
+
         public TextView getDayView() { return dayView; }
+
+        public androidx.constraintlayout.widget.ConstraintLayout getDailyLayoutView()
+                                                                 { return dailyLayoutView; }
     }
 
 
@@ -70,8 +79,9 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
             JSONArray weatherArray = currentObj.getJSONArray("weather");
             JSONObject weatherObj = (JSONObject) weatherArray.get(0);
 
-            maxTemperature = Math.round(temperatureObj.getDouble("max") - 273.15) + "°C";
-            minTemperature = Math.round(temperatureObj.getDouble("min") - 273.15) + "°C";
+            maxTemperature = Math.round(temperatureObj.getDouble("max")) + "°C";
+            minTemperature = Math.round(temperatureObj.getDouble("min")) + "°C";
+            weather = weatherObj.getString("main");
             weatherDescription = weatherObj.getString("description");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -87,6 +97,8 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
         viewHolder.getWeatherDescriptionViewView().setText(weatherDescription);
         viewHolder.getMaxTemperatureView().setText(maxTemperature);
         viewHolder.getMinTemperatureView().setText(minTemperature);
+
+        WeatherData.setBackgroundImage(viewHolder.getDailyLayoutView(), weather);
     }
 
 

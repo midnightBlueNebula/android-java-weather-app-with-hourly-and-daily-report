@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdapter.ViewHolder> {
     private JSONArray localDataSet;
     private String temperature;
+    private String weather;
     private String weatherDescription;
 
 
@@ -28,6 +29,7 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
         private final TextView hourView;
         private final TextView temperatureView;
         private final TextView weatherDescriptionView;
+        private final androidx.constraintlayout.widget.ConstraintLayout hourlyLayoutView;
 
         public ViewHolder(View view) {
             super(view);
@@ -35,6 +37,7 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
             hourView = view.findViewById(R.id.hourlyHourView);
             temperatureView = view.findViewById(R.id.hourlyTemperatureView);
             weatherDescriptionView = view.findViewById(R.id.hourlyWeatherDescriptionView);
+            hourlyLayoutView = view.findViewById(R.id.hourlyLayout);
         }
 
         public TextView getHourView() {
@@ -48,6 +51,9 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
         public TextView getWeatherDescriptionView() {
             return weatherDescriptionView;
         }
+
+        public androidx.constraintlayout.widget.ConstraintLayout getHourlyLayoutView()
+                                                                 { return hourlyLayoutView; }
     }
 
 
@@ -71,8 +77,9 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
             JSONArray currentWeatherArray = currentObj.getJSONArray("weather");
             JSONObject currentWeatherObject = (JSONObject) currentWeatherArray.get(0);
 
+            weather = currentWeatherObject.getString("main");
             weatherDescription = currentWeatherObject.getString("description");
-            temperature = Math.round(currentObj.getDouble("temp") - 273.15) + "°C";
+            temperature = Math.round(currentObj.getDouble("temp")) + "°C";
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -85,6 +92,8 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
 
         viewHolder.getTemperatureView().setText(temperature);
         viewHolder.getWeatherDescriptionView().setText(weatherDescription);
+
+        WeatherData.setBackgroundImage(viewHolder.getHourlyLayoutView(), weather);
     }
 
 
