@@ -5,6 +5,8 @@
     android:id="@+id/hourlyLayout"
     android:layout_width="125dp"
     android:layout_height="100dp"
+    android:backgroundTint="@android:color/holo_blue_light"
+    android:backgroundTintMode="add"
     tools:context=".MainActivity">
 
     <TextView
