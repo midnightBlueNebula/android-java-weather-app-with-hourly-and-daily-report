@@ -5,9 +5,16 @@
     android:id="@+id/dailyLayout"
     android:layout_width="125dp"
     android:layout_height="100dp"
-    android:backgroundTint="@android:color/holo_blue_light"
+    android:backgroundTint="@android:color/holo_blue_bright"
     android:backgroundTintMode="add"
     tools:context=".MainActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/holo_blue_dark"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/dailyDayView"
