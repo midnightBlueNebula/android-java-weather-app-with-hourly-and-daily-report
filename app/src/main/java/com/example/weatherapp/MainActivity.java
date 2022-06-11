@@ -15,22 +15,52 @@ import com.example.weatherapp.databinding.ActivityMainBinding;
 import com.example.weatherapp.weatherdata.WeatherData;
 
 public class MainActivity extends AppCompatActivity {
+    private androidx.constraintlayout.widget.ConstraintLayout constraintLayout;
+    private SearchView search;
+    private androidx.recyclerview.widget.RecyclerView hourlyList;
+    private androidx.recyclerview.widget.RecyclerView dailyList;
+    private ActivityMainBinding binding;
+
+    public WeatherData data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityMainBinding
-                binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        androidx.constraintlayout.widget.ConstraintLayout
-                constraintLayout = findViewById(R.id.constraintLayout);
+        assignViews(); // constraintLayout, search, hourlyList, dailyList.
+        assignLayoutsToRecyclerViews(); // Makes hourlyList and dailyList horizontal.
 
-        SearchView search = findViewById(R.id.searchCity);
-        androidx.recyclerview.widget.RecyclerView hourlyList = findViewById(R.id.hourlyList);
-        androidx.recyclerview.widget.RecyclerView dailyList = findViewById(R.id.dailyList);
+        data = new WeatherData("Ankara");
+        handleBinding();
 
 
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                data = new WeatherData(query);
+                handleBinding();
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
+
+
+    private void assignViews(){
+        constraintLayout = findViewById(R.id.constraintLayout);
+        search = findViewById(R.id.searchCity);
+        hourlyList = findViewById(R.id.hourlyList);
+        dailyList = findViewById(R.id.dailyList);
+    }
+
+    private void assignLayoutsToRecyclerViews(){
         RecyclerView.LayoutManager RecyclerViewLayoutManagerForHourlyList
                 = new LinearLayoutManager(
                 getApplicationContext());
@@ -59,36 +89,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         hourlyList.setLayoutManager(HorizontalLayoutForHourlyList);
-
         dailyList.setLayoutManager(HorizontalLayoutForDailyList);
-
-        WeatherData data = new WeatherData("Ankara");
-
-        binding.setData(data);
-        hourlyList.setAdapter(data.getHourlyWeatherAdapter());
-        dailyList.setAdapter(data.getDailyWeatherAdapter());
-        WeatherData.setBackgroundImage(constraintLayout, data.getWeather());
-
-
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                WeatherData data = new WeatherData(query);
-
-                binding.setData(data);
-                hourlyList.setAdapter(data.getHourlyWeatherAdapter());
-                dailyList.setAdapter(data.getDailyWeatherAdapter());
-                WeatherData.setBackgroundImage(constraintLayout, data.getWeather());
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
     }
 
+    private void handleBinding(){
+        binding.setData(data);
 
+        hourlyList.setAdapter(data.getHourlyWeatherAdapter());
+        dailyList.setAdapter(data.getDailyWeatherAdapter());
+
+        WeatherData.setBackgroundImage(constraintLayout, data.getWeather());
+    }
 }

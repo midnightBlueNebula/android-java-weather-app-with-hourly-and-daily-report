@@ -5,7 +5,7 @@
     android:id="@+id/dailyLayout"
     android:layout_width="125dp"
     android:layout_height="100dp"
-    android:backgroundTint="@android:color/holo_blue_bright"
+    android:backgroundTint="#008192"
     android:backgroundTintMode="add"
     tools:context=".MainActivity">
 
