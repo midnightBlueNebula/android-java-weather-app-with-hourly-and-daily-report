@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.RequiresApi;
 import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
 
@@ -30,6 +31,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 
 public class WeatherData {
@@ -140,6 +145,17 @@ public class WeatherData {
             case "Ash" : layout.setBackgroundResource(R.drawable.ash); break;
             default: layout.setBackgroundResource(R.drawable.clouds); break;
         }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String getHourAndMinuteFromUnix(long unix){
+        long ms = (long) unix * 1000;
+
+        LocalDateTime dateTime
+                = LocalDateTime.ofInstant(Instant.ofEpochMilli(ms), ZoneId.systemDefault());
+
+        return dateTime.getHour() + ":" + dateTime.getMinute();
     }
 
 

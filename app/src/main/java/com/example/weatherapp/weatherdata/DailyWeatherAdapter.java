@@ -24,6 +24,8 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
     private String weatherDescription;
     private String maxTemperature;
     private String minTemperature;
+    private String sunrise;
+    private String sunset;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -31,6 +33,8 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
         private final TextView weatherDescriptionView;
         private final TextView maxTemperatureView;
         private final TextView minTemperatureView;
+        private final TextView sunriseView;
+        private final TextView sunsetView;
         private final androidx.constraintlayout.widget.ConstraintLayout dailyLayoutView;
 
         public ViewHolder(View view) {
@@ -40,6 +44,8 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
             weatherDescriptionView = view.findViewById(R.id.dailyWeatherDescriptionView);
             maxTemperatureView = view.findViewById(R.id.dailyMaxTemperatureView);
             minTemperatureView = view.findViewById(R.id.dailyMinTemperatureView);
+            sunriseView = view.findViewById(R.id.sunriseTime);
+            sunsetView = view.findViewById(R.id.sunsetTime);
             dailyLayoutView = view.findViewById(R.id.dailyLayout);
         }
 
@@ -52,6 +58,10 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
         public TextView getMinTemperatureView() { return minTemperatureView; }
 
         public TextView getDayView() { return dayView; }
+
+        public TextView getSunriseView() { return sunriseView; }
+
+        public TextView getSunsetView() { return  sunsetView; }
 
         public androidx.constraintlayout.widget.ConstraintLayout getDailyLayoutView()
                                                                  { return dailyLayoutView; }
@@ -83,6 +93,8 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
             minTemperature = Math.round(temperatureObj.getDouble("min")) + "°C";
             weather = weatherObj.getString("main");
             weatherDescription = weatherObj.getString("description");
+            sunrise = WeatherData.getHourAndMinuteFromUnix(currentObj.getLong("sunrise"));
+            sunset = WeatherData.getHourAndMinuteFromUnix(currentObj.getLong("sunset"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -97,6 +109,8 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
         viewHolder.getWeatherDescriptionViewView().setText(weatherDescription);
         viewHolder.getMaxTemperatureView().setText(maxTemperature);
         viewHolder.getMinTemperatureView().setText(minTemperature);
+        viewHolder.getSunriseView().setText(sunrise);
+        viewHolder.getSunsetView().setText(sunset);
 
         WeatherData.setBackgroundImage(viewHolder.getDailyLayoutView(), weather);
     }
