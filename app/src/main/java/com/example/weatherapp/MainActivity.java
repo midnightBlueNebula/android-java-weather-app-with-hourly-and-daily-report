@@ -1,12 +1,19 @@
 package com.example.weatherapp;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private androidx.recyclerview.widget.RecyclerView hourlyList;
     private androidx.recyclerview.widget.RecyclerView dailyList;
     private ActivityMainBinding binding;
+    private String locationName;
 
     public WeatherData data;
 
@@ -32,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
         assignViews(); // constraintLayout, search, hourlyList, dailyList.
         assignLayoutsToRecyclerViews(); // Makes hourlyList and dailyList horizontal.
 
-        data = new WeatherData("Ankara");
+        SharedPreferences sharedPref = getSharedPreferences("citypref", 0);
+        locationName = sharedPref.getString("location", "London");
+
+        data = new WeatherData(locationName);
         handleBinding();
 
 
@@ -41,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 data = new WeatherData(query);
                 handleBinding();
+
+                SharedPreferences.Editor editor= sharedPref.edit();
+                editor.putString("location", query);
+                editor.commit();
 
                 return false;
             }
