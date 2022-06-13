@@ -6,7 +6,7 @@
     android:layout_width="125dp"
     android:layout_height="100dp"
     android:backgroundTint="#008192"
-    android:backgroundTintMode="add"
+    android:backgroundTintMode="multiply"
     tools:context=".MainActivity">
 
     <View

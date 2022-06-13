@@ -11,13 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:backgroundTint="#008192"
-        android:backgroundTintMode="add"
+        android:backgroundTintMode="multiply"
+        android:theme="@style/TextColorStyle"
         tools:context=".MainActivity">
 
         <SearchView
             android:id="@+id/searchCity"
             android:layout_width="match_parent"
             android:layout_height="55dp"
+            android:theme="@style/SearchCityStyle"
+            android:queryHint="Search by city/region name."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
