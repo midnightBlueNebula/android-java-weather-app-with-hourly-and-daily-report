@@ -43,6 +43,51 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hourlyWeatherDescriptionView" />
+        app:layout_constraintTop_toBottomOf="@id/hourlyWeatherDescriptionView"
+        app:layout_constraintBottom_toTopOf="@id/hourlyHumidityLabel"/>
+
+    <TextView
+        android:id="@+id/hourlyHumidityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:text="Humidity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/hourlyTemperatureView"
+        app:layout_constraintTop_toBottomOf="@id/hourlyTemperatureView"
+        app:layout_constraintBottom_toTopOf="@id/hourlyHumidityView" />
+
+    <TextView
+        android:id="@+id/hourlyWindLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:text="Wind"
+        app:layout_constraintStart_toEndOf="@id/hourlyTemperatureView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hourlyTemperatureView"
+        app:layout_constraintBottom_toTopOf="@+id/hourlyWindView" />
+
+    <TextView
+        android:id="@+id/hourlyHumidityView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:text="@{data.humidity}"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/hourlyHumidityLabel"
+        app:layout_constraintStart_toStartOf="@id/hourlyHumidityLabel"
+        app:layout_constraintTop_toBottomOf="@+id/hourlyHumidityLabel" />
+
+    <TextView
+        android:id="@+id/hourlyWindView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:text="@{data.wind}"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/hourlyWindLabel"
+        app:layout_constraintStart_toStartOf="@+id/hourlyWindLabel"
+        app:layout_constraintTop_toBottomOf="@+id/hourlyWindLabel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

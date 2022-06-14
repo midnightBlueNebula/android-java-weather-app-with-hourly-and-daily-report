@@ -47,6 +47,9 @@ public class WeatherData {
     private String humidity;
     private String feelsLike;
     private String wind;
+    private String uvIndex;
+    private String visibility;
+    private String pressure;
     private double geoCoords[] = new double[2];
 
     private HourlyWeatherAdapter hourlyWeatherAdapteradapter;
@@ -92,6 +95,10 @@ public class WeatherData {
             feelsLike = Math.round(currentWeather.getDouble("feels_like")) + "°C";
             wind = currentWeather.getString("wind_speed")
                     + "m/s " + currentWeather.getString("wind_deg")+"°";
+
+            uvIndex = currentWeather.getDouble("uvi") + "";
+            visibility = (double) currentWeather.getInt("visibility")/1000 + "km";
+            pressure = currentWeather.getInt("pressure") + "hPa";
 
             JSONArray weatherArr = currentWeather.getJSONArray("weather");
             JSONObject weatherObj = (JSONObject) weatherArr.get(0);
@@ -155,6 +162,9 @@ public class WeatherData {
     }
 
 
+    public static void assignWeatherData(JSONObject currentWeather){}
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getHourAndMinuteFromUnix(long unix){
         long ms = (long) unix * 1000;
@@ -193,4 +203,10 @@ public class WeatherData {
     public String getFeelsLike() { return feelsLike; }
 
     public String getWind() { return wind; }
+
+    public String getUvIndex() { return uvIndex; }
+
+    public String getVisibility() { return visibility; }
+
+    public String getPressure() { return pressure; }
 }

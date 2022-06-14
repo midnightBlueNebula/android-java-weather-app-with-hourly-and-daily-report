@@ -62,6 +62,14 @@
             app:layout_constraintTop_toBottomOf="@+id/weatherDescription"
             app:layout_constraintBottom_toTopOf="@id/feelsLikeLabel" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/holo_blue_dark"
+            app:layout_constraintTop_toBottomOf="@id/temperature"
+            app:layout_constraintBottom_toTopOf="@id/feelsLikeLabel"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
             android:id="@+id/humidityLabel"
             android:layout_width="wrap_content"
@@ -70,8 +78,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/feelsLikeView"
             app:layout_constraintTop_toBottomOf="@id/temperature"
-            app:layout_constraintBottom_toTopOf="@id/humidityView"
-            tools:layout_editor_absoluteY="392dp" />
+            app:layout_constraintBottom_toTopOf="@id/humidityView" />
 
         <TextView
             android:id="@+id/feelsLikeLabel"
@@ -98,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{data.humidity}"
-            app:layout_constraintBottom_toTopOf="@+id/hourlyList"
+            app:layout_constraintBottom_toTopOf="@+id/uviLabel"
             app:layout_constraintEnd_toEndOf="@+id/humidityLabel"
             app:layout_constraintStart_toStartOf="@id/humidityLabel"
             app:layout_constraintTop_toBottomOf="@+id/humidityLabel" />
@@ -108,9 +115,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{data.feelsLike}"
-            app:layout_constraintBottom_toTopOf="@+id/hourlyList"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/visibilityLabel"
+            app:layout_constraintStart_toStartOf="@id/feelsLikeLabel"
+            app:layout_constraintEnd_toEndOf="@id/feelsLikeLabel"
             app:layout_constraintTop_toBottomOf="@id/feelsLikeLabel" />
 
         <TextView
@@ -118,10 +125,78 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{data.wind}"
-            app:layout_constraintBottom_toTopOf="@+id/hourlyList"
+            app:layout_constraintBottom_toTopOf="@+id/pressureLabel"
             app:layout_constraintEnd_toEndOf="@id/windLabel"
             app:layout_constraintStart_toStartOf="@+id/windLabel"
             app:layout_constraintTop_toBottomOf="@+id/windLabel" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/holo_blue_dark"
+            app:layout_constraintTop_toBottomOf="@id/feelsLikeView"
+            app:layout_constraintBottom_toTopOf="@id/visibilityLabel"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/uviLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UV Index"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/visibilityLabel"
+            app:layout_constraintTop_toBottomOf="@id/humidityView"
+            app:layout_constraintBottom_toTopOf="@id/visibilityView" />
+
+        <TextView
+            android:id="@+id/visibilityLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Visibility"
+            app:layout_constraintStart_toEndOf="@id/uviLabel"
+            app:layout_constraintEnd_toStartOf="@id/pressureLabel"
+            app:layout_constraintTop_toBottomOf="@id/feelsLikeView"
+            app:layout_constraintBottom_toTopOf="@id/visibilityView" />
+
+        <TextView
+            android:id="@+id/pressureLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pressure"
+            app:layout_constraintStart_toEndOf="@id/visibilityLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/humidityView"
+            app:layout_constraintBottom_toTopOf="@id/visibilityView" />
+
+        <TextView
+            android:id="@+id/uviView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.uvIndex}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/visibilityView"
+            app:layout_constraintTop_toBottomOf="@id/uviLabel"
+            app:layout_constraintBottom_toTopOf="@id/hourlyList" />
+
+        <TextView
+            android:id="@+id/visibilityView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.visibility}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/visibilityLabel"
+            app:layout_constraintBottom_toTopOf="@id/hourlyList" />
+
+        <TextView
+            android:id="@+id/pressureView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.pressure}"
+            app:layout_constraintStart_toEndOf="@id/visibilityView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pressureLabel"
+            app:layout_constraintBottom_toTopOf="@id/hourlyList" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/hourlyList"

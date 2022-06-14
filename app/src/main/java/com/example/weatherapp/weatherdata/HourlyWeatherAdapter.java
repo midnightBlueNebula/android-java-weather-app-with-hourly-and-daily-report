@@ -23,12 +23,17 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
     private String temperature;
     private String weather;
     private String weatherDescription;
+    private String humidity;
+    private String feelsLike;
+    private String wind;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView hourView;
         private final TextView temperatureView;
         private final TextView weatherDescriptionView;
+        private final TextView humidityView;
+        private final TextView windView;
         private final androidx.constraintlayout.widget.ConstraintLayout hourlyLayoutView;
 
         public ViewHolder(View view) {
@@ -38,6 +43,8 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
             temperatureView = view.findViewById(R.id.hourlyTemperatureView);
             weatherDescriptionView = view.findViewById(R.id.hourlyWeatherDescriptionView);
             hourlyLayoutView = view.findViewById(R.id.hourlyLayout);
+            humidityView = view.findViewById(R.id.hourlyHumidityView);
+            windView = view.findViewById(R.id.hourlyWindView);
         }
 
         public TextView getHourView() {
@@ -51,6 +58,10 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
         public TextView getWeatherDescriptionView() {
             return weatherDescriptionView;
         }
+
+        public TextView getHumidityView() { return humidityView; }
+
+        public TextView getWindView() { return windView; }
 
         public androidx.constraintlayout.widget.ConstraintLayout getHourlyLayoutView()
                                                                  { return hourlyLayoutView; }
@@ -80,6 +91,9 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
             weather = currentWeatherObject.getString("main");
             weatherDescription = currentWeatherObject.getString("description");
             temperature = Math.round(currentObj.getDouble("temp")) + "°C";
+            humidity = currentObj.getInt("humidity") + "%";
+            feelsLike = Math.round(currentObj.getDouble("feels_like")) + "°C";
+            wind = currentObj.getString("wind_speed") + "m/s ";
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -92,6 +106,8 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
 
         viewHolder.getTemperatureView().setText(temperature);
         viewHolder.getWeatherDescriptionView().setText(weatherDescription);
+        viewHolder.getHumidityView().setText(humidity);
+        viewHolder.getWindView().setText(wind);
 
         WeatherData.setBackgroundImage(viewHolder.getHourlyLayoutView(), weather);
     }
