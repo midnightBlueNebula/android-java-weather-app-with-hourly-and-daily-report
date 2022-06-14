@@ -82,6 +82,7 @@
         android:textSize="13dp"
         app:layout_constraintStart_toStartOf="@id/sunriseLabel"
         app:layout_constraintEnd_toEndOf="@id/sunriseLabel"
+        app:layout_constraintTop_toBottomOf="@id/sunriseLabel"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
@@ -91,6 +92,7 @@
         android:textSize="13dp"
         app:layout_constraintStart_toStartOf="@id/sunsetLabel"
         app:layout_constraintEnd_toEndOf="@id/sunsetLabel"
+        app:layout_constraintTop_toBottomOf="@id/sunsetLabel"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

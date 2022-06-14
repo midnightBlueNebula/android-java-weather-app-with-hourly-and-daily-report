@@ -67,9 +67,70 @@
             android:textAlignment="center"
             android:textSize="34sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.492"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cityName" />
+            app:layout_constraintTop_toBottomOf="@+id/cityName"
+            app:layout_constraintBottom_toTopOf="@id/feelsLikeLabel" />
+
+        <TextView
+            android:id="@+id/humidityLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Humidity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/feelsLikeView"
+            app:layout_constraintTop_toBottomOf="@id/temperature"
+            app:layout_constraintBottom_toTopOf="@id/humidityView"
+            tools:layout_editor_absoluteY="392dp" />
+
+        <TextView
+            android:id="@+id/feelsLikeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feels Like"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/temperature"
+            app:layout_constraintBottom_toTopOf="@+id/feelsLikeView" />
+
+        <TextView
+            android:id="@+id/windLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wind"
+            app:layout_constraintStart_toEndOf="@id/feelsLikeLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/temperature"
+            app:layout_constraintBottom_toTopOf="@+id/windView" />
+
+        <TextView
+            android:id="@+id/humidityView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.humidity}"
+            app:layout_constraintBottom_toTopOf="@+id/hourlyList"
+            app:layout_constraintEnd_toEndOf="@+id/humidityLabel"
+            app:layout_constraintStart_toStartOf="@id/humidityLabel"
+            app:layout_constraintTop_toBottomOf="@+id/humidityLabel" />
+
+        <TextView
+            android:id="@+id/feelsLikeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.feelsLike}"
+            app:layout_constraintBottom_toTopOf="@+id/hourlyList"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/feelsLikeLabel" />
+
+        <TextView
+            android:id="@+id/windView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.wind}"
+            app:layout_constraintBottom_toTopOf="@+id/hourlyList"
+            app:layout_constraintEnd_toEndOf="@id/windLabel"
+            app:layout_constraintStart_toStartOf="@+id/windLabel"
+            app:layout_constraintTop_toBottomOf="@+id/windLabel" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/hourlyList"

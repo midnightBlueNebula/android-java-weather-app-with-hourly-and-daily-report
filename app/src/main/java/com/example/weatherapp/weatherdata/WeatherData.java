@@ -44,6 +44,9 @@ public class WeatherData {
     private String temperature;
     private String weatherDescription;
     private String cityName;
+    private String humidity;
+    private String feelsLike;
+    private String wind;
     private double geoCoords[] = new double[2];
 
     private HourlyWeatherAdapter hourlyWeatherAdapteradapter;
@@ -85,6 +88,10 @@ public class WeatherData {
             dailyWeatherAdapter = new DailyWeatherAdapter(daily);
 
             temperature = Math.round(currentWeather.getDouble("temp")) + "°C";
+            humidity = currentWeather.getInt("humidity") + "%";
+            feelsLike = Math.round(currentWeather.getDouble("feels_like")) + "°C";
+            wind = currentWeather.getString("wind_speed")
+                    + " " + currentWeather.getString("wind_deg");
 
             JSONArray weatherArr = currentWeather.getJSONArray("weather");
             JSONObject weatherObj = (JSONObject) weatherArr.get(0);
@@ -180,4 +187,10 @@ public class WeatherData {
     }
 
     public DailyWeatherAdapter getDailyWeatherAdapter() { return dailyWeatherAdapter; }
+
+    public String getHumidity() { return humidity; }
+
+    public String getFeelsLike() { return feelsLike; }
+
+    public String getWind() { return wind; }
 }
