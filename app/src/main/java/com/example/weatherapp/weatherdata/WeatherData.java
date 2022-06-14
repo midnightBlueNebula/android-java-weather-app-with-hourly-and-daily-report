@@ -162,9 +162,6 @@ public class WeatherData {
     }
 
 
-    public static void assignWeatherData(JSONObject currentWeather){}
-
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getHourAndMinuteFromUnix(long unix){
         long ms = (long) unix * 1000;
