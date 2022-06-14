@@ -91,7 +91,7 @@ public class WeatherData {
             humidity = currentWeather.getInt("humidity") + "%";
             feelsLike = Math.round(currentWeather.getDouble("feels_like")) + "°C";
             wind = currentWeather.getString("wind_speed")
-                    + " " + currentWeather.getString("wind_deg");
+                    + "m/s " + currentWeather.getString("wind_deg")+"°";
 
             JSONArray weatherArr = currentWeather.getJSONArray("weather");
             JSONObject weatherObj = (JSONObject) weatherArr.get(0);
