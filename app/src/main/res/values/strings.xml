@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Weather App</string>
+    <string name="search">Input city or region name.</string>
+    <string name="feels_like">Feels Like</string>
+    <string name="wind">Wind</string>
+    <string name="visibility">Visibility</string>
+    <string name="pressure">Pressure</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="Sunset">Sunset</string>
+    <string name="humidity">Humidity</string>
+    <string name="now">NOW</string>
+    <string name="today">TODAY</string>
+    <string name="sunday">SUNDAY</string>
+    <string name="monday">MONDAY</string>
+    <string name="tuesday">TUESDAY</string>
+    <string name="wednesday">WEDNESDAY</string>
+    <string name="thursday">THURSDAY</string>
+    <string name="friday">FRIDAY</string>
+    <string name="saturday">SATURDAY</string>
 </resources>

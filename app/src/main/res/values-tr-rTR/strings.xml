@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Weather App</string>
+    <string name="humidity">Nem</string>
+    <string name="feels_like">Hissedilen</string>
+    <string name="wind">Rüzgar</string>
+    <string name="visibility">Görüş</string>
+    <string name="pressure">Basınç</string>
+    <string name="search">Şehir veya bölge ismi.</string>
+    <string name="sunrise">Şafak</string>
+    <string name="Sunset">Akşam</string>
+    <string name="now">ŞİMDİ</string>
+    <string name="today">BUGÜN</string>
+    <string name="sunday">PAZAR</string>
+    <string name="monday">PAZARTESİ</string>
+    <string name="tuesday">SALI</string>
+    <string name="wednesday">ÇARŞAMBA</string>
+    <string name="thursday">PERŞEMBE</string>
+    <string name="friday">CUMA</string>
+    <string name="saturday">CUMARTESİ</string>
+</resources>

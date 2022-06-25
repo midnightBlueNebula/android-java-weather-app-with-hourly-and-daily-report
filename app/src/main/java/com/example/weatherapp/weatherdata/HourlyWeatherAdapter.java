@@ -99,7 +99,7 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
         }
 
         if(position == 0){
-            viewHolder.getHourView().setText("NOW");
+            viewHolder.getHourView().setText(R.string.now);
         } else {
             viewHolder.getHourView().setText(LocalDateTime.now().plusHours(position).getHour()+":00");
         }

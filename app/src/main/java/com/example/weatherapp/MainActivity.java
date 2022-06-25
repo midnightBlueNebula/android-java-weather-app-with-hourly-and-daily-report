@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.weatherapp.databinding.ActivityMainBinding;
 import com.example.weatherapp.weatherdata.WeatherData;
 
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
     private androidx.constraintlayout.widget.ConstraintLayout constraintLayout;
     private SearchView search;

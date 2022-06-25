@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:theme="@style/SearchCityStyle"
-            android:queryHint="Search by city/region name."
+            android:queryHint="@string/search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -44,6 +44,7 @@
             android:text="@{data.weatherDescription}"
             android:textSize="20sp"
             android:textStyle="italic"
+            android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/temperature"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,9 +75,9 @@
             android:id="@+id/humidityLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Humidity"
+            android:text="@string/humidity"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/feelsLikeView"
+            app:layout_constraintEnd_toStartOf="@+id/temperature"
             app:layout_constraintTop_toBottomOf="@id/temperature"
             app:layout_constraintBottom_toTopOf="@id/humidityView" />
 
@@ -84,7 +85,7 @@
             android:id="@+id/feelsLikeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Feels Like"
+            android:text="@string/feels_like"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/temperature"
@@ -94,8 +95,8 @@
             android:id="@+id/windLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Wind"
-            app:layout_constraintStart_toEndOf="@id/feelsLikeLabel"
+            android:text="@string/wind"
+            app:layout_constraintStart_toEndOf="@id/temperature"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/temperature"
             app:layout_constraintBottom_toTopOf="@+id/windView" />
@@ -142,9 +143,9 @@
             android:id="@+id/uviLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="UV Index"
+            android:text="UVI"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/visibilityLabel"
+            app:layout_constraintEnd_toStartOf="@id/temperature"
             app:layout_constraintTop_toBottomOf="@id/humidityView"
             app:layout_constraintBottom_toTopOf="@id/visibilityView" />
 
@@ -152,9 +153,9 @@
             android:id="@+id/visibilityLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Visibility"
-            app:layout_constraintStart_toEndOf="@id/uviLabel"
-            app:layout_constraintEnd_toStartOf="@id/pressureLabel"
+            android:text="@string/visibility"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/feelsLikeView"
             app:layout_constraintBottom_toTopOf="@id/visibilityView" />
 
@@ -162,8 +163,8 @@
             android:id="@+id/pressureLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pressure"
-            app:layout_constraintStart_toEndOf="@id/visibilityLabel"
+            android:text="@string/pressure"
+            app:layout_constraintStart_toEndOf="@id/temperature"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/humidityView"
             app:layout_constraintBottom_toTopOf="@id/visibilityView" />
@@ -173,8 +174,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{data.uvIndex}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/visibilityView"
+            app:layout_constraintStart_toStartOf="@id/uviLabel"
+            app:layout_constraintEnd_toEndOf="@id/uviLabel"
             app:layout_constraintTop_toBottomOf="@id/uviLabel"
             app:layout_constraintBottom_toTopOf="@id/hourlyList" />
 
@@ -183,8 +184,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{data.visibility}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/visibilityLabel"
+            app:layout_constraintEnd_toEndOf="@id/visibilityLabel"
             app:layout_constraintTop_toBottomOf="@id/visibilityLabel"
             app:layout_constraintBottom_toTopOf="@id/hourlyList" />
 
@@ -193,8 +194,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{data.pressure}"
-            app:layout_constraintStart_toEndOf="@id/visibilityView"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/pressureLabel"
+            app:layout_constraintEnd_toEndOf="@id/pressureLabel"
             app:layout_constraintTop_toBottomOf="@id/pressureLabel"
             app:layout_constraintBottom_toTopOf="@id/hourlyList" />
 

@@ -100,9 +100,10 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
         }
 
         if(position == 0){
-            viewHolder.getDayView().setText("TODAY");
+            viewHolder.getDayView().setText(R.string.today);
         } else {
-            viewHolder.getDayView().setText(LocalDateTime.now().plusDays(position).getDayOfWeek()+"");
+            int day = getLocalDayName(LocalDateTime.now().plusDays(position).getDayOfWeek()+"");
+            viewHolder.getDayView().setText(day);
         }
 
 
@@ -119,5 +120,18 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
     @Override
     public int getItemCount() {
         return localDataSet.length();
+    }
+
+    private static int getLocalDayName(String day){
+        switch (day.toLowerCase()){
+            case "monday": return R.string.monday;
+            case "tuesday": return R.string.tuesday;
+            case "wednesday": return R.string.wednesday;
+            case "thursday": return R.string.thursday;
+            case "friday": return R.string.friday;
+            case "frıday": return R.string.friday;
+            case "saturday": return R.string.saturday;
+            default: return R.string.sunday;
+        }
     }
 }

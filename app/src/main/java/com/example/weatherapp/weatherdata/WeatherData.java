@@ -36,6 +36,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class WeatherData {
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -50,6 +51,8 @@ public class WeatherData {
     private String uvIndex;
     private String visibility;
     private String pressure;
+
+    private static String langCode = Locale.getDefault().getLanguage();
     private double geoCoords[] = new double[2];
 
     private HourlyWeatherAdapter hourlyWeatherAdapteradapter;
@@ -77,7 +80,7 @@ public class WeatherData {
             e.printStackTrace();
         }
 
-        weatherReq += (geoCoords[0])+"&lon="+(geoCoords[1])+"&units=metric&exclude=minutely,current&appid=" + apiKey;
+        weatherReq += (geoCoords[0])+"&lon="+(geoCoords[1])+"&units=metric&exclude=minutely,current&lang="+langCode+"&appid=" + apiKey;
 
         try {
             JSONObject jsonWeather = readJsonFromUrl(weatherReq, false);
