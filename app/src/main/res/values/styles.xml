@@ -2,7 +2,7 @@
 <resources>
     <style name="SearchCityStyle">
         <item name="android:editTextColor">@android:color/white</item>
-        <item name="android:background">@android:color/holo_blue_light</item>
+        <item name="android:background">#36f8be</item>
     </style>
 
     <style name ="TextColorStyle">
