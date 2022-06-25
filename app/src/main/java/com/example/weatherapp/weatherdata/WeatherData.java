@@ -80,15 +80,21 @@ public class WeatherData {
             e.printStackTrace();
         }
 
-        weatherReq += (geoCoords[0])+"&lon="+(geoCoords[1])+"&units=metric&exclude=minutely,current&lang="+langCode+"&appid=" + apiKey;
+        weatherReq += (geoCoords[0])+"&lon="+(geoCoords[1])+"&units=metric&exclude=minutely&lang="+langCode+"&appid=" + apiKey;
 
         try {
             JSONObject jsonWeather = readJsonFromUrl(weatherReq, false);
 
-            JSONArray hourly = jsonWeather.getJSONArray("hourly");
-            JSONArray daily = jsonWeather.getJSONArray("daily");
+            JSONArray hourly = new JSONArray();
 
-            JSONObject currentWeather = (JSONObject) hourly.get(0);
+            JSONObject currentWeather = jsonWeather.getJSONObject("current");
+            hourly.put(currentWeather);
+
+            JSONArray daily = jsonWeather.getJSONArray("daily");
+            JSONArray hourlyObjs = jsonWeather.getJSONArray("hourly");
+            for(int i = 0; i < hourlyObjs.length(); ++i){
+                hourly.put(hourlyObjs.get(i));
+            }
 
             hourlyWeatherAdapteradapter = new HourlyWeatherAdapter(hourly);
             dailyWeatherAdapter = new DailyWeatherAdapter(daily);
