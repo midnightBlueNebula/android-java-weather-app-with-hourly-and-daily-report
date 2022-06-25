@@ -2,10 +2,14 @@
 <resources>
     <style name="SearchCityStyle">
         <item name="android:editTextColor">@android:color/white</item>
-        <item name="android:background">#008192</item>
+        <item name="android:background">@android:color/holo_blue_light</item>
     </style>
 
     <style name ="TextColorStyle">
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1.5</item>
+        <item name="android:shadowDy">1.5</item>
+        <item name="android:shadowRadius">2</item>
     </style>
 </resources>

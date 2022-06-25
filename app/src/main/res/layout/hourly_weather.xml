@@ -5,7 +5,7 @@
     android:id="@+id/hourlyLayout"
     android:layout_width="125dp"
     android:layout_height="100dp"
-    android:backgroundTint="#008192"
+    android:backgroundTint="#36f8be"
     android:backgroundTintMode="multiply"
     tools:context=".MainActivity">
 

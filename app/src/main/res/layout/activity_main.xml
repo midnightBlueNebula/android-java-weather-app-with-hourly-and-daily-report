@@ -10,7 +10,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:backgroundTint="#008192"
+        android:backgroundTint="#36f8be"
         android:backgroundTintMode="multiply"
         android:theme="@style/TextColorStyle"
         tools:context=".MainActivity">

@@ -146,7 +146,7 @@ public class WeatherData {
         switch (weather){
             case "Clear" : layout.setBackgroundResource(R.drawable.sunny); break;
             case "Rain" : layout.setBackgroundResource(R.drawable.rain); break;
-            case "Clouds" : layout.setBackgroundResource(R.drawable.clouds); break;
+            case "Clouds" : layout.setBackgroundResource(R.drawable.cloudy); break;
             case "Snow" : layout.setBackgroundResource(R.drawable.snow); break;
             case "Extreme" : layout.setBackgroundResource(R.drawable.extreme_weather); break;
             case "Thunderstorm" : layout.setBackgroundResource(R.drawable.thunderstorm); break;
@@ -160,7 +160,7 @@ public class WeatherData {
             case "Tornado" : layout.setBackgroundResource(R.drawable.tornado); break;
             case "Squall" : layout.setBackgroundResource(R.drawable.squall); break;
             case "Ash" : layout.setBackgroundResource(R.drawable.ash); break;
-            default: layout.setBackgroundResource(R.drawable.clouds); break;
+            default: layout.setBackgroundResource(R.drawable.cloudy); break;
         }
     }
 
