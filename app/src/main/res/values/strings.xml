@@ -17,4 +17,16 @@
     <string name="thursday">THURSDAY</string>
     <string name="friday">FRIDAY</string>
     <string name="saturday">SATURDAY</string>
+    <string name="JANUARY">JANUARY</string>
+    <string name="FEBRUARY">FEBRUARY</string>
+    <string name="MARCH">MARCH</string>
+    <string name="APRIL">APRIL</string>
+    <string name="MAY">MAY</string>
+    <string name="JUNE">JUNE</string>
+    <string name="JULY">JULY</string>
+    <string name="AUGUST">AUGUST</string>
+    <string name="SEPTEMBER">SEPTEMBER</string>
+    <string name="OCTOBER">OCTOBER</string>
+    <string name="NOVEMBER">NOVEMBER</string>
+    <string name="DECEMBER">DECEMBER</string>
 </resources>

@@ -29,6 +29,7 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private JSONObject weatherObj;
         private final TextView dayView;
         private final TextView weatherDescriptionView;
         private final TextView maxTemperatureView;
@@ -47,6 +48,17 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
             sunriseView = view.findViewById(R.id.sunriseTime);
             sunsetView = view.findViewById(R.id.sunsetTime);
             dailyLayoutView = view.findViewById(R.id.dailyLayout);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                public void onClick(View v) {
+                    try {
+                        new WeatherData(weatherObj);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
 
         public TextView getWeatherDescriptionViewView() {
@@ -86,6 +98,7 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
         try {
             JSONObject currentObj = (JSONObject)  localDataSet.get(position);
             JSONObject temperatureObj = currentObj.getJSONObject("temp");
+            JSONObject feelsLikeObj = currentObj.getJSONObject("feels_like");
             JSONArray weatherArray = currentObj.getJSONArray("weather");
             JSONObject weatherObj = (JSONObject) weatherArray.get(0);
 
@@ -95,6 +108,12 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
             weatherDescription = weatherObj.getString("description");
             sunrise = WeatherData.getHourAndMinuteFromUnix(currentObj.getLong("sunrise"));
             sunset = WeatherData.getHourAndMinuteFromUnix(currentObj.getLong("sunset"));
+
+            currentObj.put("temp", temperatureObj.getDouble("day"));
+            currentObj.put("feels_like", feelsLikeObj.getDouble("day"));
+            currentObj.put("visibility", 10000);
+
+            viewHolder.weatherObj = currentObj;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -113,7 +132,7 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
         viewHolder.getSunriseView().setText(sunrise);
         viewHolder.getSunsetView().setText(sunset);
 
-        WeatherData.setBackgroundImage(viewHolder.getDailyLayoutView(), weather);
+        WeatherData.setBackgroundImage(viewHolder.getDailyLayoutView(), weather, true);
     }
 
 

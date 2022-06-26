@@ -1,5 +1,6 @@
 package com.example.weatherapp.weatherdata;
 
+import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.weatherapp.MainActivity;
 import com.example.weatherapp.R;
 
 import org.json.JSONArray;
@@ -17,9 +19,13 @@ import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdapter.ViewHolder> {
     private JSONArray localDataSet;
+    private boolean day;
+    private int currentHour;
     private String temperature;
     private String weather;
     private String weatherDescription;
@@ -29,6 +35,7 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private JSONObject weatherObj;
         private final TextView hourView;
         private final TextView temperatureView;
         private final TextView weatherDescriptionView;
@@ -38,13 +45,23 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
 
         public ViewHolder(View view) {
             super(view);
-
             hourView = view.findViewById(R.id.hourlyHourView);
             temperatureView = view.findViewById(R.id.hourlyTemperatureView);
             weatherDescriptionView = view.findViewById(R.id.hourlyWeatherDescriptionView);
             hourlyLayoutView = view.findViewById(R.id.hourlyLayout);
             humidityView = view.findViewById(R.id.hourlyHumidityView);
             windView = view.findViewById(R.id.hourlyWindView);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                public void onClick(View v) {
+                    try {
+                        new WeatherData(weatherObj);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
 
         public TextView getHourView() {
@@ -85,8 +102,13 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         try {
             JSONObject currentObj = (JSONObject)  localDataSet.get(position);
+            viewHolder.weatherObj = currentObj;
             JSONArray currentWeatherArray = currentObj.getJSONArray("weather");
             JSONObject currentWeatherObject = (JSONObject) currentWeatherArray.get(0);
+
+            currentHour = WeatherData.getHourFromUnix(currentObj.getLong("dt"));
+
+            day = WeatherData.dayOrNight(currentHour);
 
             weather = currentWeatherObject.getString("main");
             weatherDescription = currentWeatherObject.getString("description");
@@ -101,7 +123,7 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
         if(position == 0){
             viewHolder.getHourView().setText(R.string.now);
         } else {
-            viewHolder.getHourView().setText(LocalDateTime.now().plusHours(position).getHour()+":00");
+            viewHolder.getHourView().setText(ZonedDateTime.now(ZoneId.of(WeatherData.getTimezone())).plusHours(position).getHour()+":00");
         }
 
         viewHolder.getTemperatureView().setText(temperature);
@@ -109,7 +131,7 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
         viewHolder.getHumidityView().setText(humidity);
         viewHolder.getWindView().setText(wind);
 
-        WeatherData.setBackgroundImage(viewHolder.getHourlyLayoutView(), weather);
+        WeatherData.setBackgroundImage(viewHolder.getHourlyLayoutView(), weather, day);
     }
 
 

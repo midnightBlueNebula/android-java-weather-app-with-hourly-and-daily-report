@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Weather App</string>
+    <string name="app_name">Hava Durumu</string>
     <string name="humidity">Nem</string>
     <string name="feels_like">Hissedilen</string>
     <string name="wind">Rüzgar</string>
@@ -18,4 +18,16 @@
     <string name="thursday">PERŞEMBE</string>
     <string name="friday">CUMA</string>
     <string name="saturday">CUMARTESİ</string>
+    <string name="JANUARY">OCAK</string>
+    <string name="FEBRUARY">ŞUBAT</string>
+    <string name="MARCH">MART</string>
+    <string name="APRIL">NİSAN</string>
+    <string name="MAY">MAYIS</string>
+    <string name="JUNE">HAZİRAN</string>
+    <string name="JULY">TEMMUZ</string>
+    <string name="AUGUST">AĞUSTOS</string>
+    <string name="SEPTEMBER">EYLÜL</string>
+    <string name="OCTOBER">EKİM</string>
+    <string name="NOVEMBER">KASIM</string>
+    <string name="DECEMBER">ARALIK</string>
 </resources>

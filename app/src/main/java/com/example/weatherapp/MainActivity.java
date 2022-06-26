@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
@@ -24,15 +26,16 @@ import com.example.weatherapp.weatherdata.WeatherData;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    private androidx.constraintlayout.widget.ConstraintLayout constraintLayout;
+    private static androidx.constraintlayout.widget.ConstraintLayout constraintLayout;
     private SearchView search;
     private androidx.recyclerview.widget.RecyclerView hourlyList;
     private androidx.recyclerview.widget.RecyclerView dailyList;
-    private ActivityMainBinding binding;
+    private static ActivityMainBinding binding;
     private String locationName;
 
     public WeatherData data;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public boolean onQueryTextSubmit(String query) {
                 data = new WeatherData(query);
@@ -115,6 +119,15 @@ public class MainActivity extends AppCompatActivity {
         hourlyList.setAdapter(data.getHourlyWeatherAdapter());
         dailyList.setAdapter(data.getDailyWeatherAdapter());
 
-        WeatherData.setBackgroundImage(constraintLayout, data.getWeather());
+        WeatherData.setBackgroundImage(constraintLayout,
+                                       data.getWeather(),
+                                       data.isDay());
+    }
+
+    public static void bindData(WeatherData selectedData){
+        binding.setData(selectedData);
+        WeatherData.setBackgroundImage(constraintLayout,
+                                       selectedData.getWeather(),
+                                       selectedData.isDay());
     }
 }
