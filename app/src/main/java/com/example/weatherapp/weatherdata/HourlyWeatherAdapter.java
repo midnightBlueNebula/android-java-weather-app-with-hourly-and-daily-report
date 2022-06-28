@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -30,8 +31,12 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
     private String weather;
     private String weatherDescription;
     private String humidity;
-    private String feelsLike;
     private String wind;
+
+    private double metricTemp;
+    private double imperialTemp;
+    private double metricWind;
+    private double imperialWind;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -112,10 +117,27 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
 
             weather = currentWeatherObject.getString("main");
             weatherDescription = currentWeatherObject.getString("description");
-            temperature = Math.round(currentObj.getDouble("temp")) + "°C";
             humidity = currentObj.getInt("humidity") + "%";
-            feelsLike = Math.round(currentObj.getDouble("feels_like")) + "°C";
-            wind = currentObj.getString("wind_speed") + "m/s ";
+
+            double temp = currentObj.getDouble("temp");
+
+            metricTemp = temp;
+            imperialTemp = WeatherData.cToF(temp);
+
+            double speed = Double.parseDouble(currentObj.getString("wind_speed"));
+
+            metricWind = speed;
+            imperialWind = WeatherData.metreSecondToMilesHour(speed);
+
+            if(MainActivity.unit == "metric"){
+                temperature = Math.round(metricTemp) + "°C";
+                wind = metricWind + "m/s";
+            } else {
+                temperature = Math.round(imperialTemp) + "°F";
+
+                DecimalFormat df = new DecimalFormat("#.0");
+                wind = df.format(imperialWind) + "mi/hr";
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.weatherapp.databinding.ActivityMainBinding;
 import com.example.weatherapp.weatherdata.WeatherData;
 
+import org.json.JSONException;
+
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,8 +34,11 @@ public class MainActivity extends AppCompatActivity {
     private androidx.recyclerview.widget.RecyclerView dailyList;
     private static ActivityMainBinding binding;
     private String locationName;
+    private TextView metricView;
+    private TextView imperialView;
 
     public WeatherData data;
+    public static String unit;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -45,19 +50,18 @@ public class MainActivity extends AppCompatActivity {
         assignViews(); // constraintLayout, search, hourlyList, dailyList.
         assignLayoutsToRecyclerViews(); // Makes hourlyList and dailyList horizontal.
 
-        SharedPreferences sharedPref = getSharedPreferences("citypref", 0);
+        SharedPreferences sharedPref = getSharedPreferences("WeatherAppPrefs", 0);
         locationName = sharedPref.getString("location", "London");
+        unit = sharedPref.getString("unit", "metric");
 
-        data = new WeatherData(locationName);
-        handleBinding();
+        requestAndBindData(locationName);
 
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public boolean onQueryTextSubmit(String query) {
-                data = new WeatherData(query);
-                handleBinding();
+                requestAndBindData(query);
 
                 SharedPreferences.Editor editor= sharedPref.edit();
                 editor.putString("location", query);
@@ -71,6 +75,49 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
+        metricView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(unit == "metric"){
+                    return;
+                }
+
+                unit = "metric";
+                SharedPreferences.Editor editor= sharedPref.edit();
+                editor.putString("unit", unit);
+                editor.commit();
+
+                try {
+                    data = new WeatherData(WeatherData.getCurrentWeatherJSON());
+                    listBinding();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        imperialView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(unit == "imperial"){
+                    return;
+                }
+
+                unit = "imperial";
+                SharedPreferences.Editor editor= sharedPref.edit();
+                editor.putString("unit", unit);
+                editor.commit();
+
+                try {
+                    data = new WeatherData(WeatherData.getCurrentWeatherJSON());
+                    listBinding();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 
@@ -79,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
         search = findViewById(R.id.searchCity);
         hourlyList = findViewById(R.id.hourlyList);
         dailyList = findViewById(R.id.dailyList);
+        metricView = findViewById(R.id.metric);
+        imperialView = findViewById(R.id.imperial);
     }
 
     private void assignLayoutsToRecyclerViews(){
@@ -116,12 +165,16 @@ public class MainActivity extends AppCompatActivity {
     private void handleBinding(){
         binding.setData(data);
 
-        hourlyList.setAdapter(data.getHourlyWeatherAdapter());
-        dailyList.setAdapter(data.getDailyWeatherAdapter());
+        listBinding();
 
         WeatherData.setBackgroundImage(constraintLayout,
                                        data.getWeather(),
                                        data.isDay());
+    }
+
+    private void listBinding(){
+        hourlyList.setAdapter(WeatherData.getHourlyWeatherAdapter());
+        dailyList.setAdapter(WeatherData.getDailyWeatherAdapter());
     }
 
     public static void bindData(WeatherData selectedData){
@@ -129,5 +182,11 @@ public class MainActivity extends AppCompatActivity {
         WeatherData.setBackgroundImage(constraintLayout,
                                        selectedData.getWeather(),
                                        selectedData.isDay());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void requestAndBindData(String query){
+        data = new WeatherData(query);
+        handleBinding();
     }
 }

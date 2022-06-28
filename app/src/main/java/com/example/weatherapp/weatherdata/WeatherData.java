@@ -32,6 +32,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -62,12 +63,28 @@ public class WeatherData {
     private static String langCode = Locale.getDefault().getLanguage();
     private double geoCoords[] = new double[2];
 
-    private HourlyWeatherAdapter hourlyWeatherAdapter;
-    private DailyWeatherAdapter dailyWeatherAdapter;
+    private static HourlyWeatherAdapter hourlyWeatherAdapter;
+    private static DailyWeatherAdapter dailyWeatherAdapter;
 
     private final String apiKey = APIKEY.getKey();
     private String geoReq = "https://api.openweathermap.org/geo/1.0/direct?q=";
     private String weatherReq = "https://api.openweathermap.org/data/2.5/onecall?lat=";
+
+    private static JSONObject currentWeather;
+
+    private String metricDate;
+    private String imperialDate;
+    private double metricTemp;
+    private double imperialTemp;
+    private double metricFeel;
+    private double imperialFeel;
+    private double metricVisibility;
+    private double imperialVisibility;
+    private double metricWind;
+    private double imperialWind;
+
+    private static String cDeg = "°C";
+    private static String fDeg = "°F";
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -95,7 +112,7 @@ public class WeatherData {
 
             JSONArray hourly = new JSONArray();
 
-            JSONObject currentWeather = jsonWeather.getJSONObject("current");
+            currentWeather = jsonWeather.getJSONObject("current");
             hourly.put(currentWeather);
 
             JSONArray daily = jsonWeather.getJSONArray("daily");
@@ -169,20 +186,42 @@ public class WeatherData {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void assignFromJSON(JSONObject currentWeather) throws JSONException {
+        long dt = currentWeather.getLong("dt");
 
-        date = getDateStrFromUnix(currentWeather.getLong("dt"));
-        currentHour = getHourFromUnix(currentWeather.getLong("dt"));
+        metricDate = getMetricDateStrFromUnix(dt);
+        imperialDate = getImperialDateStrFromUnix(dt);
+        date = getDateStrForUnit();
 
+        currentHour = getHourFromUnix(dt);
         day = dayOrNight(currentHour);
 
-        temperature = Math.round(currentWeather.getDouble("temp")) + "°C";
+        double temp = currentWeather.getDouble("temp");
+
+        metricTemp = temp;
+        imperialTemp = cToF(temp);
+        temperature = getTempForUnit();
+
         humidity = currentWeather.getInt("humidity") + "%";
-        feelsLike = Math.round(currentWeather.getDouble("feels_like")) + "°C";
-        wind = currentWeather.getString("wind_speed")
-                + "m/s " + currentWeather.getString("wind_deg")+"°";
+
+        double feel = currentWeather.getDouble("feels_like");
+        metricFeel = feel;
+        imperialFeel = cToF(feel);
+        feelsLike = getFeelForUnit();
+
+        double speed = Double.parseDouble(currentWeather.getString("wind_speed"));
+        metricWind = speed;
+        imperialWind = metreSecondToMilesHour(speed);
+
+        wind = getWindForUnit() + " " + currentWeather.getString("wind_deg")+"°";
 
         uvIndex = currentWeather.getDouble("uvi") + "";
-        visibility = (double) currentWeather.getInt("visibility")/1000 + "km";
+
+        double distance = (double) currentWeather.getInt("visibility")/1000;
+        metricVisibility = distance;
+        imperialVisibility = kilometreToMiles(distance);
+
+        visibility = getVisibilityForUnit();
+
         pressure = currentWeather.getInt("pressure") + "hPa";
 
         JSONArray weatherArr = currentWeather.getJSONArray("weather");
@@ -190,6 +229,132 @@ public class WeatherData {
 
         weather = weatherObj.getString("main");
         weatherDescription = weatherObj.getString("description");
+    }
+
+
+    public static double cToF(double c){
+        return c * 1.8 + 32;
+    }
+
+
+    public static double metreSecondToMilesHour(double speed){
+        return speed * 3.6 / 1.6;
+    }
+
+
+    public static double kilometreToMiles(double distance){
+        return distance / 1.6;
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String getMetricDateStrFromUnix(long unix){
+        LocalDateTime dateTime =  getDateFromUnix(unix);
+
+        return doubleDigit(dateTime.getHour()) + ":"
+                + doubleDigit(dateTime.getMinute()) + " - "
+                + doubleDigit(dateTime.getDayOfMonth()) + "/"
+                + doubleDigit(dateTime.getMonthValue()) + "/"
+                + dateTime.getYear();
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String getImperialDateStrFromUnix(long unix){
+        LocalDateTime dateTime =  getDateFromUnix(unix);
+
+        return doubleDigit(dateTime.getHour()) + ":"
+                + doubleDigit(dateTime.getMinute()) + " - "
+                + doubleDigit(dateTime.getMonthValue()) + "/"
+                + doubleDigit(dateTime.getDayOfMonth()) + "/"
+                + dateTime.getYear();
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String getDateStrForUnit(){
+        if(MainActivity.unit == "metric"){
+            return metricDate;
+        }
+
+        return imperialDate;
+    }
+
+
+    private String getMetricTemp(){
+        return Math.round(metricTemp) + cDeg;
+    }
+
+
+    private String getImperialTemp(){
+        return Math.round(imperialTemp) + fDeg;
+    }
+
+
+    private String getTempForUnit(){
+        if(MainActivity.unit == "metric"){
+            return getMetricTemp();
+        }
+
+        return getImperialTemp();
+    }
+
+
+    private String getMetricFeel(){
+        return Math.round(metricFeel) + cDeg;
+    }
+
+
+    private String getImperialFeel(){
+        return Math.round(imperialFeel) + fDeg;
+    }
+
+
+    private String getFeelForUnit(){
+        if(MainActivity.unit == "metric"){
+            return getMetricFeel();
+        }
+
+        return getImperialFeel();
+    }
+
+
+    private String getMetricWind(){
+        return metricWind + "m/s";
+    }
+
+
+    private String getImperialWind(){
+        DecimalFormat df = new DecimalFormat("#.0");
+        return df.format(imperialWind) + "mi/hr";
+    }
+
+
+    private String getWindForUnit(){
+        if(MainActivity.unit == "metric"){
+            return getMetricWind();
+        }
+
+        return getImperialWind();
+    }
+
+
+    private String getMetricVisibility(){
+        return metricVisibility + "km";
+    }
+
+
+    private String getImperialVisibility(){
+        return imperialVisibility + "mi";
+    }
+
+
+    private String getVisibilityForUnit(){
+        if(MainActivity.unit == "metric"){
+            return getMetricVisibility();
+        }
+
+        return getImperialVisibility();
     }
 
 
@@ -232,18 +397,6 @@ public class WeatherData {
         }
 
         return dt + "";
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static String getDateStrFromUnix(long unix){
-        LocalDateTime dateTime =  getDateFromUnix(unix);
-
-        return doubleDigit(dateTime.getHour()) + ":"
-                + doubleDigit(dateTime.getMinute()) + " - "
-                + doubleDigit(dateTime.getDayOfMonth()) + "/"
-                + doubleDigit(dateTime.getMonthValue()) + "/"
-                + dateTime.getYear();
     }
 
 
@@ -301,11 +454,11 @@ public class WeatherData {
         return cityName;
     }
 
-    public HourlyWeatherAdapter getHourlyWeatherAdapter() {
+    public static HourlyWeatherAdapter getHourlyWeatherAdapter() {
         return hourlyWeatherAdapter;
     }
 
-    public DailyWeatherAdapter getDailyWeatherAdapter() { return dailyWeatherAdapter; }
+    public static DailyWeatherAdapter getDailyWeatherAdapter() { return dailyWeatherAdapter; }
 
     public String getHumidity() { return humidity; }
 
@@ -318,4 +471,6 @@ public class WeatherData {
     public String getVisibility() { return visibility; }
 
     public String getPressure() { return pressure; }
+
+    public static JSONObject getCurrentWeatherJSON() { return currentWeather; }
 }

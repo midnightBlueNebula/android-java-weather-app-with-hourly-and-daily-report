@@ -10,13 +10,16 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.weatherapp.MainActivity;
 import com.example.weatherapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.util.Iterator;
 
 public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapter.ViewHolder> {
     private JSONArray localDataSet;
@@ -26,6 +29,11 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
     private String minTemperature;
     private String sunrise;
     private String sunset;
+
+    private double metricMinTemp;
+    private double imperialMinTemp;
+    private double metricMaxTemp;
+    private double imperialMaxTemp;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -94,26 +102,44 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void onBindViewHolder(DailyWeatherAdapter.ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         try {
             JSONObject currentObj = (JSONObject)  localDataSet.get(position);
+
+            String temp = currentObj.toString();
+            JSONObject curObj = new JSONObject(temp);
+
             JSONObject temperatureObj = currentObj.getJSONObject("temp");
             JSONObject feelsLikeObj = currentObj.getJSONObject("feels_like");
             JSONArray weatherArray = currentObj.getJSONArray("weather");
             JSONObject weatherObj = (JSONObject) weatherArray.get(0);
 
-            maxTemperature = Math.round(temperatureObj.getDouble("max")) + "°C";
-            minTemperature = Math.round(temperatureObj.getDouble("min")) + "°C";
+            double minTemp = temperatureObj.getDouble("min");
+            double maxTemp = temperatureObj.getDouble("max");
+
             weather = weatherObj.getString("main");
             weatherDescription = weatherObj.getString("description");
             sunrise = WeatherData.getHourAndMinuteFromUnix(currentObj.getLong("sunrise"));
             sunset = WeatherData.getHourAndMinuteFromUnix(currentObj.getLong("sunset"));
 
-            currentObj.put("temp", temperatureObj.getDouble("day"));
-            currentObj.put("feels_like", feelsLikeObj.getDouble("day"));
-            currentObj.put("visibility", 10000);
+            metricMinTemp = minTemp;
+            metricMaxTemp = maxTemp;
+            imperialMinTemp = WeatherData.cToF(minTemp);
+            imperialMaxTemp = WeatherData.cToF(maxTemp);
 
-            viewHolder.weatherObj = currentObj;
+            curObj.put("temp", temperatureObj.getDouble("day"));
+            curObj.put("feels_like", feelsLikeObj.getDouble("day"));
+            curObj.put("visibility", 10000);
+
+            viewHolder.weatherObj = curObj;
+
+            if(MainActivity.unit == "metric"){
+                maxTemperature = Math.round(metricMaxTemp) + "°C";
+                minTemperature = Math.round(metricMinTemp) + "°C";
+            } else {
+                maxTemperature = Math.round(imperialMaxTemp) + "°F";
+                minTemperature = Math.round(imperialMinTemp) + "°F";
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

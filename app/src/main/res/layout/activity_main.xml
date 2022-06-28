@@ -26,13 +26,43 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/metric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toStartOf="@id/separator"
+            app:layout_constraintTop_toBottomOf="@id/searchCity"
+            app:layout_constraintBottom_toTopOf="@id/dateView"
+            android:text="°C"/>
+
+        <TextView
+            android:id="@+id/separator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searchCity"
+            app:layout_constraintBottom_toTopOf="@id/dateView"
+            android:text=" | "/>
+
+        <TextView
+            android:id="@+id/imperial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/separator"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toBottomOf="@id/searchCity"
+            app:layout_constraintBottom_toTopOf="@id/dateView"
+            android:text="°F"/>
+
+        <TextView
             android:id="@+id/dateView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{data.date}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searchCity"
+            app:layout_constraintTop_toBottomOf="@id/separator"
             app:layout_constraintBottom_toTopOf="@id/cityName" />
 
         <TextView
